@@ -1,0 +1,24 @@
+name: Performance Tests (K6)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 1' # Executa semanalmente ?s segundas-feiras
+
+jobs:
+  k6-load-tests:
+    name: Run K6 Load & Stress Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Run K6 Login Performance Test
+        run: k6 run Performance/scripts/login-performance.js
+
+      - name: Run K6 Cart Performance Test
+        run: k6 run Performance/scripts/cart-performance.js

@@ -1,0 +1,31 @@
+{
+  "name": "ebac-shop-ui-tests",
+  "version": "1.0.0",
+  "description": "Su?te de Testes E2E Web com Cypress e Page Object Pattern (US-0001 e US-0002)",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --headless --browser chrome",
+    "test": "cypress run --headless",
+    "report:merge": "mochawesome-merge cypress/reports/mochawesome/*.json > cypress/reports/report.json",
+    "report:generate": "marge cypress/reports/report.json -f report -o cypress/reports/html",
+    "test:report": "npm run test && npm run report:merge && npm run report:generate"
+  },
+  "keywords": [
+    "cypress",
+    "qa",
+    "e2e",
+    "testing",
+    "page-objects",
+    "ebac"
+  ],
+  "author": "Leonardo de Almeida",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.6.0",
+    "cypress-mochawesome-reporter": "^3.7.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0"
+  }
+}

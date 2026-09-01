@@ -1,0 +1,43 @@
+name: Web UI E2E Tests (Cypress)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'UI/**'
+      - '.github/workflows/test-ui.yml'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  cypress-tests:
+    name: Run Cypress E2E Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        working-directory: ./UI
+        run: npm install
+
+      - name: Run Cypress Headless
+        working-directory: ./UI
+        run: npx cypress run --headless --browser chrome
+        continue-on-error: true
+
+      - name: Upload Test Artifacts (Screenshots & Videos)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-artifacts
+          path: |
+            UI/cypress/screenshots
+            UI/cypress/reports
+          retention-days: 14

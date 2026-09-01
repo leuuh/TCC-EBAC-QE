@@ -1,0 +1,29 @@
+{
+  "name": "ebac-shop-mobile-tests",
+  "version": "1.0.0",
+  "description": "Su?te de Testes Mobile Automatizados com WebdriverIO e Appium (US-0004)",
+  "main": "index.js",
+  "scripts": {
+    "test:android": "wdio run ./wdio.conf.js",
+    "test": "echo \"Para rodar os testes mobile, inicie o Appium Server e execute: npm run test:android\" && exit 0"
+  },
+  "keywords": [
+    "appium",
+    "webdriverio",
+    "mobile-testing",
+    "android",
+    "page-objects",
+    "ebac"
+  ],
+  "author": "Leonardo de Almeida",
+  "license": "ISC",
+  "devDependencies": {
+    "@wdio/appium-service": "^8.27.0",
+    "@wdio/cli": "^8.27.0",
+    "@wdio/local-runner": "^8.27.0",
+    "@wdio/mocha-framework": "^8.27.0",
+    "@wdio/spec-reporter": "^8.27.0",
+    "appium": "^2.4.1",
+    "appium-uiautomator2-driver": "^3.0.4"
+  }
+}

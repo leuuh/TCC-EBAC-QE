@@ -1,0 +1,36 @@
+name: API Integration Tests (Supertest)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'API/**'
+      - '.github/workflows/test-api.yml'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  api-tests:
+    name: Run API Contract & Functional Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: API/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: ./API
+        run: npm install
+
+      - name: Run Supertest & Jest
+        working-directory: ./API
+        run: npm test
+        env:
+          BASE_URL: http://lojaebac.ebaconline.art.br
