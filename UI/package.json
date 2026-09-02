@@ -1,7 +1,7 @@
 {
   "name": "ebac-shop-ui-tests",
   "version": "1.0.0",
-  "description": "Su?te de Testes E2E Web com Cypress e Page Object Pattern (US-0001 e US-0002)",
+  "description": "Suíte de Testes E2E Web com Cypress e Page Object Pattern (US-0001 e US-0002)",
   "main": "index.js",
   "scripts": {
     "cypress:open": "cypress open",

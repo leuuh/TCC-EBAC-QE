@@ -1,7 +1,7 @@
 {
   "name": "ebac-shop-api-tests",
   "version": "1.0.0",
-  "description": "Su?te de Testes de API Rest com Supertest e Valida??o de Contrato (US-0003)",
+  "description": "Suíte de Testes de API Rest com Supertest e Validação de Contrato (US-0003)",
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand --detectOpenHandles --verbose",

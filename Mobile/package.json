@@ -1,7 +1,7 @@
 {
   "name": "ebac-shop-mobile-tests",
   "version": "1.0.0",
-  "description": "Su?te de Testes Mobile Automatizados com WebdriverIO e Appium (US-0004)",
+  "description": "Suíte de Testes Mobile Automatizados com WebdriverIO e Appium (US-0004)",
   "main": "index.js",
   "scripts": {
     "test:android": "wdio run ./wdio.conf.js",

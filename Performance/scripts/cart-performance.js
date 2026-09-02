@@ -8,7 +8,7 @@ export const options = {
     { duration: '20s', target: 0 },  // Ramp-Down
   ],
   thresholds: {
-    http_req_duration: ['p(95)<2000'], // 95% das requisi??es abaixo de 2s
+    http_req_duration: ['p(95)<2000'], // 95% das requisições abaixo de 2s
     http_req_failed: ['rate<0.05'],    // Falha menor que 5%
   },
 };
@@ -19,8 +19,8 @@ export default function () {
   // 1. Visualizar vitrine de produtos
   const resShop = http.get(`${BASE_URL}/produtos/`);
   check(resShop, {
-    'GET /produtos/ status ? 200': (r) => r.status === 200,
-    'Cat?logo renderizado': (r) => r.body.includes('woocommerce-LoopProduct-link') || r.body.includes('produtos'),
+    'GET /produtos/ status é 200': (r) => r.status === 200,
+    'Catélogo renderizado': (r) => r.body.includes('woocommerce-LoopProduct-link') || r.body.includes('produtos'),
   });
 
   sleep(1);
@@ -28,7 +28,7 @@ export default function () {
   // 2. Visualizar carrinho de compras
   const resCart = http.get(`${BASE_URL}/carrinho/`);
   check(resCart, {
-    'GET /carrinho/ status ? 200': (r) => r.status === 200,
+    'GET /carrinho/ status é 200': (r) => r.status === 200,
     'Tempo de resposta carrinho < 2000ms': (r) => r.timings.duration < 2000,
   });
 

@@ -1,9 +1,9 @@
 const CatalogPage = require('../pageobjects/catalog.page');
 const ProductPage = require('../pageobjects/product.page');
 
-describe('[US-0004] Cat?logo de Produtos Mobile - EBAC Shop', () => {
-  it('TC-015: Deve buscar produtos por palavra-chave no cat?logo (Caminho Feliz)', async () => {
-    // Simula??o do fluxo de busca no cat?logo
+describe('[US-0004] Catélogo de Produtos Mobile - EBAC Shop', () => {
+  it('TC-015: Deve buscar produtos por palavra-chave no catálogo (Caminho Feliz)', async () => {
+    // Simulação do fluxo de busca no catálogo
     const searchTerm = 'Jacket';
     // await CatalogPage.searchProduct(searchTerm);
     // expect(await CatalogPage.productList.length).toBeGreaterThan(0);
@@ -17,7 +17,7 @@ describe('[US-0004] Cat?logo de Produtos Mobile - EBAC Shop', () => {
     expect(category).toBe('Roupas Masculinas');
   });
 
-  it('TC-015-PROD: Deve selecionar um produto no cat?logo e visualizar seus detalhes', async () => {
+  it('TC-015-PROD: Deve selecionar um produto no catálogo e visualizar seus detalhes', async () => {
     // await CatalogPage.selectFirstProduct();
     // expect(await ProductPage.productTitle.isDisplayed()).toBe(true);
     // expect(await ProductPage.addToCartButton.isDisplayed()).toBe(true);

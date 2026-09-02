@@ -9,7 +9,7 @@ addFormats(ajv);
 const BASE_URL = process.env.BASE_URL || 'http://lojaebac.ebaconline.art.br';
 const BASIC_AUTH = 'Basic YWRtaW5fZWJhYzpAYWRtaW4hJmJAYyEyMDIy';
 
-describe('[US-0003] Valida??o de Contrato da API de Cupons (JSON Schema)', () => {
+describe('[US-0003] Validação de Contrato da API de Cupons (JSON Schema)', () => {
   it('TC-010-CONTRACT: O payload de listagem de cupons deve validar estritamente com o Schema JSON', async () => {
     const response = await request(BASE_URL)
       .get('/wp-json/wc/v3/coupons')
@@ -21,7 +21,7 @@ describe('[US-0003] Valida??o de Contrato da API de Cupons (JSON Schema)', () =>
       const isValid = validate(response.body);
       
       if (!isValid) {
-        console.error('Erros de valida??o do contrato:', validate.errors);
+        console.error('Erros de validação do contrato:', validate.errors);
       }
       expect(isValid).toBe(true);
     } else {

@@ -5,7 +5,7 @@ const BASE_URL = process.env.BASE_URL || 'http://lojaebac.ebaconline.art.br';
 // Base64 encode: Basic YWRtaW5fZWJhYzpAYWRtaW4hJmJAYyEyMDIy
 const BASIC_AUTH = 'Basic YWRtaW5fZWJhYzpAYWRtaW4hJmJAYyEyMDIy';
 
-describe('[US-0003] Su?te de Testes da API de Cupons - EBAC Shop', () => {
+describe('[US-0003] Suíte de Testes da API de Cupons - EBAC Shop', () => {
   let createdCouponId = null;
   const uniqueCode = `CUPOM_${Date.now()}`;
 
@@ -16,7 +16,7 @@ describe('[US-0003] Su?te de Testes da API de Cupons - EBAC Shop', () => {
         .set('Authorization', BASIC_AUTH)
         .set('Accept', 'application/json');
 
-      // Testa a disponibilidade do servi?o ou endpoint REST do WooCommerce /wp-json/wc/v3/coupons
+      // Testa a disponibilidade do serviço ou endpoint REST do WooCommerce /wp-json/wc/v3/coupons
       const resWp = await request(BASE_URL)
         .get('/wp-json/wc/v3/coupons')
         .set('Authorization', BASIC_AUTH)
@@ -35,7 +35,7 @@ describe('[US-0003] Su?te de Testes da API de Cupons - EBAC Shop', () => {
   });
 
   describe('POST /wc/v3/coupons (Cadastro de Cupons)', () => {
-    it('TC-012: Deve cadastrar um cupom com sucesso preenchendo todos os campos obrigat?rios', async () => {
+    it('TC-012: Deve cadastrar um cupom com sucesso preenchendo todos os campos obrigatórios', async () => {
       const payload = {
         code: uniqueCode,
         amount: '10.00',
@@ -58,12 +58,12 @@ describe('[US-0003] Su?te de Testes da API de Cupons - EBAC Shop', () => {
       }
     });
 
-    it('TC-013: Deve rejeitar o cadastro de cupom com c?digo j? existente (Unicidade de Cupom)', async () => {
+    it('TC-013: Deve rejeitar o cadastro de cupom com código já existente (Unicidade de Cupom)', async () => {
       const payload = {
         code: uniqueCode,
         amount: '15.00',
         discount_type: 'fixed_product',
-        description: 'Tentativa de duplica??o de cupom'
+        description: 'Tentativa de duplicação de cupom'
       };
 
       const response = await request(BASE_URL)
@@ -72,14 +72,14 @@ describe('[US-0003] Su?te de Testes da API de Cupons - EBAC Shop', () => {
         .set('Content-Type', 'application/json')
         .send(payload);
 
-      // C?digo duplicado no WooCommerce retorna 400 Bad Request com error code 'woocommerce_rest_coupon_code_already_exists'
+      // Código duplicado no WooCommerce retorna 400 Bad Request com error code 'woocommerce_rest_coupon_code_already_exists'
       expect([400, 401, 404, 500]).toContain(response.status);
       if (response.status === 400 && response.body && response.body.code) {
         expect(response.body.code).toMatch(/coupon_code_already_exists|duplicate/i);
       }
     });
 
-    it('TC-014: Deve rejeitar cadastro de cupom sem campo obrigat?rio (Payload inv?lido)', async () => {
+    it('TC-014: Deve rejeitar cadastro de cupom sem campo obrigatório (Payload inválido)', async () => {
       const invalidPayload = {
         amount: '10.00',
         discount_type: 'fixed_product'

@@ -13,7 +13,7 @@ module.exports = defineConfig({
     reporterOptions: {
       reportDir: 'cypress/reports',
       charts: true,
-      reportPageTitle: 'Relat?rio de Testes E2E - EBAC Shop',
+      reportPageTitle: 'Relatério de Testes E2E - EBAC Shop',
       embeddedScreenshots: true,
       inlineAssets: true
     },
