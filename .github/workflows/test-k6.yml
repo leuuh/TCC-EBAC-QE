@@ -1,18 +1,32 @@
 name: Performance Tests (K6)
 
 on:
+  push:
+    paths:
+      - 'Performance/**'
+      - '.github/workflows/test-k6.yml'
   workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Perfil de execução (smoke = 2 VUs/30s, load = 20 VUs/2min)'
+        type: choice
+        options:
+          - smoke
+          - load
+        default: smoke
   schedule:
-    - cron: '0 3 * * 1' # Executa semanalmente ?s segundas-feiras
+    - cron: '0 3 * * 1' # Smoke semanal às segundas-feiras
 
 jobs:
-  k6-load-tests:
-    name: Run K6 Load & Stress Tests
+  k6-tests:
+    name: Run K6 Performance Tests (${{ inputs.profile || 'smoke' }})
     runs-on: ubuntu-latest
+    env:
+      PROFILE: ${{ inputs.profile || 'smoke' }}
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
@@ -21,4 +35,5 @@ jobs:
         run: k6 run Performance/scripts/login-performance.js
 
       - name: Run K6 Cart Performance Test
+        if: ${{ !cancelled() }}
         run: k6 run Performance/scripts/cart-performance.js

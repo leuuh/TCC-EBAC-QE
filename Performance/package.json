@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test:login": "k6 run scripts/login-performance.js",
+    "test:login:smoke": "k6 run -e PROFILE=smoke scripts/login-performance.js",
     "test:cart": "k6 run scripts/cart-performance.js",
+    "test:cart:smoke": "k6 run -e PROFILE=smoke scripts/cart-performance.js",
     "test:all": "npm run test:login && npm run test:cart",
     "docker:login": "docker run --rm -i -v \"%cd%:/app\" -w /app grafana/k6 run scripts/login-performance.js",
     "docker:cart": "docker run --rm -i -v \"%cd%:/app\" -w /app grafana/k6 run scripts/cart-performance.js"

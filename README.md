@@ -37,7 +37,7 @@ TCC-EBAC-QE/
 ?   ├── wdio.conf.js            # Configuração do Appium / UiAutomator2
 ├── Performance/                # Testes de Carga e Performance (K6)
 ?   ├── data/users.json         # Massa de dados (user1_ebac a user5_ebac)
-?   ├── scripts/                # Scripts de Carga (20 VUs, 2min, Ramp-Up 20s)
+?   ├── scripts/                # Scripts de Carga (perfis smoke e load)
 ?       ├── login-performance.js
 ?       ├── cart-performance.js
 ├── docs/                       # Documentação técnica e Mapa Mental
@@ -77,13 +77,19 @@ npm run test:android
 ### 4. Testes de Performance (K6)
 ```bash
 cd Performance
-# Execução local com k6 instalado:
+# Execução local com k6 instalado (perfil load: 20 VUs, 2min, Ramp-Up 20s):
 npm run test:login
 npm run test:cart
+
+# Perfil smoke (2 VUs, 30s), o mesmo usado no CI:
+npm run test:login:smoke
+npm run test:cart:smoke
 
 # Ou execução via Docker:
 npm run docker:login
 ```
+
+> No CI, o workflow roda o perfil **smoke** a cada push em `Performance/` e toda segunda-feira. O perfil **load** fica para execução manual (Actions → Performance Tests (K6) → Run workflow → `load`), porque a loja é um ambiente compartilhado do curso e os runners do GitHub ficam nos EUA, o que eleva a latência.
 
 ---
 

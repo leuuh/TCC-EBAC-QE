@@ -1,53 +1,57 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { SharedArray } from 'k6/data';
+import { BASE_URL, options as profileOptions } from './config.js';
 
 // Carrega a massa de dados de usuários do arquivo JSON
 const users = new SharedArray('massa de usuarios', function () {
   return JSON.parse(open('../data/users.json'));
 });
 
-export const options = {
-  stages: [
-    { duration: '20s', target: 20 }, // Ramp-Up: atinge 20 VUs em 20 segundos
-    { duration: '1m20s', target: 20 }, // Sustentação de carga com 20 VUs
-    { duration: '20s', target: 0 },  // Ramp-Down: desaceleração
-  ],
-  thresholds: {
-    http_req_duration: ['p(95)<2000'], // 95% das requisições devem responder em menos de 2s
-    http_req_failed: ['rate<0.05'],    // Taxa de erro inferior a 5%
-  },
-};
+export const options = profileOptions;
 
-const BASE_URL = __ENV.BASE_URL || 'http://lojaebac.ebaconline.art.br';
+const LOGIN_URL = `${BASE_URL}/minha-conta/`;
 
 export default function () {
   // Seleciona um usuário da massa de dados de forma distribuída entre os VUs
   const user = users[__VU % users.length];
 
+  // Cada iteração começa deslogada: sem isso, a partir da 2ª iteração o VU já
+  // estaria logado e a página não teria o formulário (nem o nonce).
+  http.cookieJar().clear(BASE_URL);
+
   // Passo 1: Acesso à página de login
-  const resLoginPage = http.get(`${BASE_URL}/minha-conta/`);
+  const resLoginPage = http.get(LOGIN_URL);
+  const nonce = resLoginPage.html()
+    .find('input[name="woocommerce-login-nonce"]')
+    .attr('value');
+
   check(resLoginPage, {
     'GET /minha-conta/ status é 200': (r) => r.status === 200,
-    'Formulário de login renderizado': (r) => r.body.includes('username') || r.body.includes('login'),
+    'Formulário de login com nonce': () => !!nonce,
   });
+
+  if (!nonce) {
+    sleep(1);
+    return;
+  }
 
   sleep(1);
 
-  // Passo 2: Submissão de autenticação (POST)
-  const loginPayload = {
+  // Passo 2: Submissão de autenticação (POST). O WooCommerce exige o nonce do
+  // formulário; sem ele o login é recusado. O 302 é seguido automaticamente.
+  const resLoginSubmit = http.post(LOGIN_URL, {
     username: user.username,
     password: user.password,
-    'woocommerce-login-nonce': '',
+    'woocommerce-login-nonce': nonce,
+    _wp_http_referer: '/minha-conta/',
     login: 'Login',
-  };
-
-  const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-  const resLoginSubmit = http.post(`${BASE_URL}/minha-conta/`, loginPayload, { headers });
+  });
 
   check(resLoginSubmit, {
-    'POST Login status é 200 ou 302': (r) => [200, 302].includes(r.status),
-    'Tempo de resposta de login < 2000ms': (r) => r.timings.duration < 2000,
+    'POST Login status é 200': (r) => r.status === 200,
+    'Usuário autenticado (link de logout visível)': (r) =>
+      typeof r.body === 'string' && r.body.includes('customer-logout'),
   });
 
   sleep(1);
