@@ -10,7 +10,7 @@ export default function () {
   check(resShop, {
     'GET /produtos/ status é 200': (r) => r.status === 200,
     'Catálogo renderizado': (r) =>
-      typeof r.body === 'string' && r.body.includes('woocommerce-LoopProduct-link'),
+      typeof r.body === 'string' && r.body.includes('product-block'),
   });
 
   sleep(1);
